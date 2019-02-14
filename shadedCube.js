@@ -1,11 +1,12 @@
 var cube_points= [];
 var cube_normals=[];
-function Cube(gl,inittrans){
+
+function ShadedCube(gl,inittrans){
 
     
     if (Cube.shaderProgram === undefined) {
         console.log("jau vor dem laden");
-        Cube.shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
+        Cube.shaderProgram = initShaders(gl, "shaded-vertex-shader", "sphere-fragment-shader");
         
         if (Cube.shaderProgram === null) {
             throw new Error('Creating the shader program failed.');

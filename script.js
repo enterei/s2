@@ -1,6 +1,15 @@
 function main() {
     init();
 }
+/*var lightPosition = vec4(1.0, 1.0, 1.0, 0.0);
+var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0);
+var lightDiffuse = vec4(1.0, 1.0, 1.0, 1.0);
+var lightSpecular = vec4(1.0, 1.0, 1.0, 1.0);
+
+var materialAmbient = vec4(1.0, 0.0, 1.0, 1.0);
+var materialDiffuse = vec4(1.0, 0.8, 0.0, 1.0);
+var materialSpecular = vec4(1.0, 0.8, 0.0, 1.0);
+var materialShininess = 100.0;*/
 
 var trans = [0, 0, 0];
 var cubes = [];
@@ -27,42 +36,42 @@ function init() {
     let perspectiveMatrix = mat4.create();
     const asp = canvas.clientWidth / canvas.clientHeight;
     const bottom = -1;
-    const zNear =- 0.001;
+    const zNear = - 0.001;
     const zFar = 100;
     mat4.ortho(pMatrix, -asp, asp, bottom, -bottom, zNear, zFar);
-    perspectiveMatrix = mat4.perspective(perspectiveMatrix, 45, canvas.width / canvas.height,0.01, 30);
+    perspectiveMatrix = mat4.perspective(perspectiveMatrix, 45, canvas.width / canvas.height, 0.01, 30);
     //try {
-        
-        var cube1 = new Cube(gl, [0.3, 0.3, -2.5]);
-        var cube2 = new Cube(gl, [0.1, 0.7, -2.5]);
-        var cube3 = new Cube(gl, [0.6, 0.2, -2.5]);
-        var cube4 = new Cube(gl, [0.2, 0.2, -2.5]);
-        var cube5 = new Cube(gl, [-0.6, 0.6, -2.5]);
-        var cube6 = new Cube(gl, [0.2, 0.5, -2.5]);
-        var cube7 = new Cube(gl, [-0.3, 0.2, -2.5]);
-        var l1 = new L(gl,[0.0,0.0,-0.5]);
-        var s1 = new Sphere(gl, [-0.1, 0.0, -5.5]);
 
-        cubes.push(cube1);
-        cubes.push(cube2);
-        cubes.push(cube3);
-        cubes.push(cube4);
-        cubes.push(cube5);
-        cubes.push(cube6);
-        cubes.push(cube7);
+    var cube1 = new Cube(gl, [0.3, 0.3, -2.5]);
+    var cube2 = new Cube(gl, [0.1, 0.7, -2.5]);
+    var cube3 = new Cube(gl, [0.6, 0.2, -2.5]);
+    var cube4 = new Cube(gl, [0.2, 0.2, -2.5]);
+    var cube5 = new Cube(gl, [-0.6, 0.6, -2.5]);
+    var cube6 = new Cube(gl, [0.2, 0.5, -2.5]);
+    var cube7 = new Cube(gl, [-0.3, 0.2, -2.5]);
+    var l1 = new L(gl, [0.0, 0.0, -0.5]);
+    var s1 = new Sphere(gl, [-0.1, 0.0, -5.5]);
+
+    cubes.push(cube1);
+    cubes.push(cube2);
+    cubes.push(cube3);
+    cubes.push(cube4);
+    cubes.push(cube5);
+    cubes.push(cube6);
+    cubes.push(cube7);
     //    cubes.push(l1);
-        cubes.push(s1);
-        for(var i = 0;i<cubes.length;i++)cubes[i].updateTrans(cubes[i].position); // for alls cubes todo
+    cubes.push(s1);
+    for (var i = 0; i < cubes.length; i++)cubes[i].updateTrans(cubes[i].position); // for alls cubes todo
 
 
-         
-        
-        var coord = new CoordinateSystem(gl);
-  // } catch (E) {
+
+
+    var coord = new CoordinateSystem(gl);
+    // } catch (E) {
     //   alert(E+"dsfnkjsfdlksfd");
-     //  return;
-//   }
-  
+    //  return;
+    //   }
+
     var then = 0;
     function render(now) {
         // calculate time per frame (seconds)
@@ -75,41 +84,41 @@ function init() {
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-   /*     for(var i = 0;i<cubes.length;i++)cubes[i].draw(gl,pMatrix,cubes[i].mMatrix);
-        if(selected!=10)coord.draw(gl,pMatrix,cubes[selected].mMatrix);*/
+        /*     for(var i = 0;i<cubes.length;i++)cubes[i].draw(gl,pMatrix,cubes[i].mMatrix);
+             if(selected!=10)coord.draw(gl,pMatrix,cubes[selected].mMatrix);*/
 
 
-        for(var i = 0;i<cubes.length;i++){
-            
-            
-            cubes[i].draw(gl,perspectiveMatrix,cubes[i].mMatrix);
-        
-        
+        for (var i = 0; i < cubes.length; i++) {
+
+
+            cubes[i].draw(gl, perspectiveMatrix, cubes[i].mMatrix);
+
+
         }
-        if(selected!=10){
-            if(cubes[selected].name=="sphere"){
+        if (selected != 10) {
+            if (cubes[selected].name == "sphere") {
                 var x = cubes[selected].transM;
                 var y = cubes[selected].rotaM;
-                
-                mat4.multiply(coord.permMat,x,y);
-                mat4.scale(coord.permMat,coord.permMat,[2.0,2.0,2.0]);
-                coord.draw(gl,perspectiveMatrix,coord.permMat);
+
+                mat4.multiply(coord.permMat, x, y);
+                mat4.scale(coord.permMat, coord.permMat, [2.0, 2.0, 2.0]);
+                coord.draw(gl, perspectiveMatrix, coord.permMat);
 
 
             }
-            
-                else{coord.draw(gl,perspectiveMatrix,cubes[selected].mMatrix);}
-            
-                      
+
+            else { coord.draw(gl, perspectiveMatrix, cubes[selected].mMatrix); }
+
+
         }
 
-      //  cubes[selected].draw(gl, perspectiveMatrix);
-        
+        //  cubes[selected].draw(gl, perspectiveMatrix);
+
 
         //cubes[selected].draw(gl, pMatrix);
-    //    coord.draw(gl, pMatrix, cubes[selected].mMatrix);
+        //    coord.draw(gl, pMatrix, cubes[selected].mMatrix);
 
-if(xxxx)requestAnimationFrame(render);
+        if (xxxx) requestAnimationFrame(render);
     }
 
     // Start rendering
@@ -134,7 +143,7 @@ window.onkeydown = function (event) {
             selected = 1;
             break;
         case '3':
-            
+
             selected = 2;
             break;
         case '4':
@@ -247,7 +256,7 @@ window.onkeydown = function (event) {
         //trst
         case 80:
             rotas[0] = 0.1;
-            
+
             cubes[selected].updateGlRota(rotas);
 
             break;
@@ -272,8 +281,8 @@ window.onkeyup = function (event) {
     scale[2] = 1.0;
 }
 
-function setfalse(){
-    xxxx= false;
+function setfalse() {
+    xxxx = false;
 }
 
 

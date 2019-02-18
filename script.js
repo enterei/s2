@@ -109,7 +109,7 @@ function init() {
     // cubes.push(s1_fragment2);   
     fragments1.push(s1_fragment1);
     //fragments2.push(s1_fragment2);
-    fragments1.push(s2_fragment1);
+ //   fragments1.push(s2_fragment1);
     //fragments2.push(s2_fragment2);
     //fragments1.push(s3_fragment1);
     //fragments2.push(s3_fragment2);

@@ -2,6 +2,7 @@
 <html>
 
 <head>
+        <script type="text/javascript" src="MV.js"></script>
     <title>WebGL Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -139,7 +140,7 @@
                                         
                                         void main()
                                         {
-                                            gl_FragColor = vec4(1.0,0.0,0.2,1.0);
+                                            gl_FragColor = vec4(0.0,0.0,0.2,1.0);
                                         }
                                         </script>
     <script id="sphere-fragment-shader2" type="x-shader/x-fragment">
@@ -150,9 +151,60 @@
                                         
                                         void main()
                                         {
-                                            gl_FragColor = vec4(0.0,0.5,0.2,1.0);
+                                            gl_FragColor = vec4(1.0,0.5,0.2,1.0);
                                         }
                                         </script>
+    <script id="gauraud-vertex-shader" type="x-shader/x-fragment">
+
+                                            attribute vec4 aPosition;
+                                            attribute vec4 aNormal;
+
+                                            uniform mat4 uMMatrix;                                        
+                                            uniform mat4 uPMatrix;
+                                            uniform mat4 normalMatrix;
+                                            uniform vec4 diffColor;
+                                            uniform vec4 specColor;                                           
+                                           
+                                            uniform vec4 lightPos;
+                                           
+
+                                            uniform int mode; 
+
+
+                                            varying vec4 fColor;
+                                            varying vec4 nNormal;
+                                            void main()
+                                            {
+                                                gl_Position = uPMatrix * uMMatrix * aPosition;
+                                                vec3 eyePos = (uMMatrix * aPosition).xyz;
+                                                vec3 L ;
+                                                
+                                                if(lightPos.w == 0.0) L = normalize(lightPos.xyz);
+                                                else L = normalize( lightPos.xyz - eyePos );
+
+                                                vec3 E = -normalize( eyePos );
+
+                                                
+                                                vec3 N = normalize((normalMatrix * aNormal).xyz);
+                                                
+                                                float Kd = max( dot(L, N), 0.0 );
+                                                vec4  diffuse = Kd*diffColor;
+                                                if(mode==0)fColor=diffuse;
+                                                fColor.a  =1.0;
+
+                                            }
+                                            </script>
+    <script id="gauraud-fragment-shader" type="x-shader/x-fragment">
+
+                                            precision mediump float;
+                                            
+                                            varying vec4 fColor;
+                                            
+                                            void main()
+                                            {
+                                                gl_FragColor = fColor;
+                                            }
+                                            </script>
 
 
 
@@ -169,7 +221,7 @@
 </body>
 <button onclick="setfalse()">b</button>
 
-<script type="text/javascript" src="MV.js"></script>
+
 <script type="text/javascript" src="gl-matrix/gl-matrix-min.js"></script>
 <script type="text/javascript" src="initShaders.js"></script>
 <script type="text/javascript" src="MV2.js"></script>

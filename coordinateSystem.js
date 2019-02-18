@@ -63,6 +63,7 @@ function CoordinateSystem(gl){
 
 
     this.draw = function(gl, pMatrix,ctm) {
+        
 
         gl.useProgram(CoordinateSystem.shaderProgram);
         gl.uniformMatrix4fv(CoordinateSystem.locations.uniform.uPMatrix, false, pMatrix);

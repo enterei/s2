@@ -149,16 +149,6 @@ function Cube(gl,inittrans){
         mat4.multiply(help, help, rotainv);
         mat4.multiply(this.transM, this.transM, help);
        
-
-
-
-
-
-        // mat4.multiply(this.transM,this.transM,help);
-
-
-
-        console.log("habede");
         this.updateAll();
     };
 

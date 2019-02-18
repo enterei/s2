@@ -1,23 +1,13 @@
 <!DOCTYPE html>
 <html>
-        <script type="text/javascript" src="MV.js"></script>
-        <script type="text/javascript" src="gl-matrix/gl-matrix-min.js"></script>
-        <script type="text/javascript" src="initShaders.js"></script>
-        <script type="text/javascript" src="MV2.js"></script>
 
+<head>
+    <title>WebGL Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-       <script type="text/javascript" src="coordinateSystem.js"></script>
-        <script type="text/javascript" src="script.js"></script>
-        <script type="text/javascript" src="cube.js"></script>
-        <script type="text/javascript" src="sphere.js"></script>
-        <script type="text/javascript" src="l.js"></script>
-    <head>
-        <title>WebGL Example</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <!-- Basic vertex shader -->
-        <script id="vs_basic" type="x-shader/x-vertex">
+    <!-- Basic vertex shader -->
+    <script id="vs_basic" type="x-shader/x-vertex">
             attribute vec3 aPosition;
             attribute vec3 aColor;
             attribute vec3 aNormal;
@@ -38,88 +28,158 @@
                 vNormal = mat3(uMMatrixTInv) * aNormal;
             }
         </script>
-        <!-- Basic fragment shader -->
-        <script id="fs_basic" type="x-shader/x-fragment">
-            varying mediump vec3 vColor;
-            varying mediump vec3 vNormal;
-            
-            void main() {
-                // direction of parallel light source
-                const mediump vec3 lightDir = vec3(-1.0, -1.0, -1.0);
-                mediump float intensity = max(0.0, -dot(normalize(vNormal), lightDir));
-                // diffuse reflection + ambient light
-                gl_FragColor = vec4(vColor * intensity + vColor * 0.1, 1.0);
-            }
-        </script>
+    <!-- Basic fragment shader -->
+    <script id="fs_basic" type="x-shader/x-fragment">
+                    varying mediump vec3 vColor;
+                    varying mediump vec3 vNormal;
+                    
+                    void main() {
+                        // direction of parallel light source
+                        const mediump vec3 lightDir = vec3(-1.0, -1.0, -1.0);
+                        mediump float intensity = max(0.0, -dot(normalize(vNormal), lightDir));
+                        // diffuse reflection + ambient light
+                        gl_FragColor = vec4(vColor * intensity + vColor * 0.1, 1.0);
+                    }
+                </script>
 
-        <script id="vertex-shader" type="x-shader/x-vertex">
-            attribute vec3 aPosition;
-            attribute vec3 aColor;
-            
-
-            // model matrix
-            uniform mat4 uMMatrix;
-            // transposed inverse of the model matrix for transforming normals
-          
-            // projection matrix
-            uniform mat4 uPMatrix;
-            
-            varying mediump vec3 vColor;
-          
-            void main()
-            {
-            vColor = aColor;
-            gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
-            }
-            </script>
-            
-            <script id="fragment-shader" type="x-shader/x-fragment">
-            
-                varying mediump vec3 vColor;
-              
-            
-            void main()
-            {
-                gl_FragColor = vec4(vColor,1.0 );
-            }
-            </script>
-
-
-            <script id="sphere-vertex-shader" type="x-shader/x-vertex">
-                            attribute vec4 aPosition;
-                            attribute vec4 aColor;
-                            varying vec4 fColor;
-                            uniform mat4 uMMatrix;
-                           
-                            uniform mat4 uPMatrix;
-                
-                         
-                            void main()
-                            {
-                            fColor = aColor;
-                            gl_Position = uPMatrix * uMMatrix * aPosition;
-                            }
-                            </script>
-            
-            <script id="sphere-fragment-shader" type="x-shader/x-fragment">
-            
-                            precision mediump float;
-                            
-                            varying vec4 fColor;
-                            
-                            void main()
-                            {
-                                gl_FragColor = fColor;
-                            }
-                            </script>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+                    attribute vec3 aPosition;
+                    attribute vec3 aColor;
+                    
         
-        <!-- gl-matrix.js for linear algebra -->
-   
-    </head>
-    <body onload="main()">
-        <div>
-            <canvas id="glCanvas" width="640" height="640"></canvas>
-        </div>
-    </body>
-    <button onclick="setfalse()">b</button>
+                    // model matrix
+                    uniform mat4 uMMatrix;
+                    // transposed inverse of the model matrix for transforming normals
+                  
+                    // projection matrix
+                    uniform mat4 uPMatrix;
+                    
+                    varying mediump vec3 vColor;
+                  
+                    void main()
+                    {
+                    vColor = aColor;
+                    gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
+                    }
+                    </script>
+    <script id="vertex-shader1" type="x-shader/x-vertex">
+                        attribute vec3 aPosition;
+                        attribute vec3 aColor;
+                        
+            
+                        // model matrix
+                        uniform mat4 uMMatrix;
+                        // transposed inverse of the model matrix for transforming normals
+                      
+                        // projection matrix
+                        uniform mat4 uPMatrix;
+                        
+                        varying mediump vec3 vColor;
+                      
+                        void main()
+                        {
+                        vColor = aColor;
+                        gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
+                        }
+                        </script>
+    <script id="vertex-shader2" type="x-shader/x-vertex">
+                            attribute vec3 aPosition;
+                            attribute vec3 aColor;
+                            
+                
+                            // model matrix
+                            uniform mat4 uMMatrix;
+                            // transposed inverse of the model matrix for transforming normals
+                          
+                            // projection matrix
+                            uniform mat4 uPMatrix;
+                            
+                            varying mediump vec3 vColor;
+                          
+                            void main()
+                            {
+                            vColor = aColor;
+                            gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
+                            }
+                            </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+
+                        varying mediump vec3 vColor;
+                      
+                    
+                    void main()
+                    {
+                        gl_FragColor = vec4(vColor,1.0 );
+                    }
+                    </script>
+
+
+    <script id="sphere-vertex-shader" type="x-shader/x-vertex">
+                                    attribute vec4 aPosition;
+                                    attribute vec4 aColor;
+                                    varying vec4 fColor;
+                                    uniform mat4 uMMatrix;
+                                   
+                                    uniform mat4 uPMatrix;
+                        
+                                 
+                                    void main()
+                                    {
+                                    fColor = aColor;
+                                    gl_Position = uPMatrix * uMMatrix * aPosition;
+                                    }
+                                    </script>
+
+    <script id="sphere-fragment-shader1" type="x-shader/x-fragment">
+
+                                        precision mediump float;
+                                        
+                                        varying vec3 vColor;
+                                        
+                                        void main()
+                                        {
+                                            gl_FragColor = vec4(1.0,0.0,0.2,1.0);
+                                        }
+                                        </script>
+    <script id="sphere-fragment-shader2" type="x-shader/x-fragment">
+
+                                        precision mediump float;
+                                        
+                                        varying vec3 vColor;
+                                        
+                                        void main()
+                                        {
+                                            gl_FragColor = vec4(0.0,0.5,0.2,1.0);
+                                        }
+                                        </script>
+
+
+
+    <!-- gl-matrix.js for linear algebra -->
+
+</head>
+
+<body onload="main()">
+    <div>
+        <canvas id="glCanvas" width="640" height="640"></canvas>
+    </div>
+    <input type="checkbox" id="myCheck" checked>
+
+</body>
+<button onclick="setfalse()">b</button>
+
+<script type="text/javascript" src="MV.js"></script>
+<script type="text/javascript" src="gl-matrix/gl-matrix-min.js"></script>
+<script type="text/javascript" src="initShaders.js"></script>
+<script type="text/javascript" src="MV2.js"></script>
+
+
+<script type="text/javascript" src="coordinateSystem.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="cube.js"></script>
+<script type="text/javascript" src="sphere.js"></script>
+<script type="text/javascript" src="shadedsphere.js"></script>
+<script type="text/javascript" src="l.js"></script>
+
 </html>

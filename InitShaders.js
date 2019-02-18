@@ -25,6 +25,7 @@ function initShaders( gl, vertexShaderId, fragmentShaderId )
     }
 
     var fragElem = document.getElementById( fragmentShaderId );
+    console.log(fragElem);
     if ( !fragElem ) { 
         alert( "Unable to load vertex shader " + fragmentShaderId );
         return -1;
@@ -44,6 +45,7 @@ function initShaders( gl, vertexShaderId, fragmentShaderId )
     var program = gl.createProgram();
     gl.attachShader( program, vertShdr );
     gl.attachShader( program, fragShdr );
+    
     gl.linkProgram( program );
     
     if ( !gl.getProgramParameter(program, gl.LINK_STATUS) ) {

@@ -13,7 +13,9 @@ var materialShininess = 100.0;*/
 
 var trans = [0, 0, 0];
 var cubes = [];
-var selected = 0;
+var fragments1 = [];
+var fragments2 = [];
+var selected = 10;
 var xxxx = true;
 
 //rotation
@@ -49,8 +51,14 @@ function init() {
     var cube5 = new Cube(gl, [-0.6, 0.6, -2.5]);
     var cube6 = new Cube(gl, [0.2, 0.5, -2.5]);
     var cube7 = new Cube(gl, [-0.3, 0.2, -2.5]);
+    var s1_fragment1 = new ShadedSphere(gl, [-0.1, 0.0, -5.5],"vertex-shader1","sphere-fragment-shader1");  
+    var s1_fragment2 = new ShadedSphere(gl, [ -0.1, 0.0, -5.5],"vertex-shader2","sphere-fragment-shader2");
+   
+    
+
+
     var l1 = new L(gl, [0.0, 0.0, -0.5]);
-    var s1 = new Sphere(gl, [-0.1, 0.0, -5.5]);
+    var s1 = new Sphere(gl, [-0.1, 0.9, -5.5]);
 
     cubes.push(cube1);
     cubes.push(cube2);
@@ -59,11 +67,18 @@ function init() {
     cubes.push(cube5);
     cubes.push(cube6);
     cubes.push(cube7);
+     cubes.push(s1_fragment1);
+     cubes.push(s1_fragment2);   
+    fragments1.push(s1_fragment1);
+    fragments2.push(s1_fragment2);
+    
+   
     //    cubes.push(l1);
-    cubes.push(s1);
+   
+   // cubes.push(s1_fragment1);
     for (var i = 0; i < cubes.length; i++)cubes[i].updateTrans(cubes[i].position); // for alls cubes todo
-
-
+    for (var i = 0; i < fragments1.length; i++)fragments1[i].updateTrans(fragments1[i].position); // for alls cubes todo
+    for (var i = 0; i < fragments2.length; i++)fragments2[i].updateTrans(fragments2[i].position); // for alls cubes todo
 
 
     var coord = new CoordinateSystem(gl);
@@ -95,6 +110,25 @@ function init() {
 
 
         }
+
+       
+        if(document.getElementById("myCheck").checked==true){
+          
+            for (var i = 0; i < fragments1.length; i++)fragments1[i].draw(gl, perspectiveMatrix, fragments1[i].mMatrix);
+           // console.log("zeichne dort");
+        }
+        else{
+           
+            for (var i = 0; i <fragments2.length; i++){ 
+              //  console.log("zeichne da");
+                
+                fragments2[i].draw(gl, perspectiveMatrix, fragments2[i].mMatrix);}
+
+        }
+
+
+
+
         if (selected != 10) {
             if (cubes[selected].name == "sphere") {
                 var x = cubes[selected].transM;
@@ -122,7 +156,7 @@ function init() {
     }
 
     // Start rendering
-    requestAnimationFrame(render);
+      requestAnimationFrame(render);
 
 }
 

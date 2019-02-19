@@ -22,7 +22,7 @@ var mode = 0;
 
 var materialDiffuse = [1.0, 0.8, 0.0,1.0];
 var materialSpecular = [1.0, 0.8, 0.0,1.0];
-var lightPosition = [0.0, 0.2, -10.0, 1.0 ];
+var lightPosition = [0.0, 10.0, 0.0, 1.0 ];
 var shin = 100.0;
 
 
@@ -384,6 +384,19 @@ window.onkeydown = function (event) {
             cubes[selected].updateGlRota(rotas);
 
             break;
+        case 85:
+            mode = 0;
+            break;
+        case 73:
+            mode = 1;
+            break;
+        case 79:
+            mode = 2;
+            break;
+        case 80:
+            mode = 3;
+            break;
+            
 
 
     }

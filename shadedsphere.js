@@ -35,6 +35,7 @@ function ShadedSphere(gl,inittrans,vs,fs){
                 matnormal: gl.getUniformLocation(this.shaderProgram,"normalMatrix"),
                 matlightPos: gl.getUniformLocation(this.shaderProgram,"lightPos"),
                 smode: gl.getUniformLocation(this.shaderProgram,"mode"),
+                shine: gl.getUniformLocation(this.shaderProgram,"shin"), 
 
 
 
@@ -148,6 +149,7 @@ function ShadedSphere(gl,inittrans,vs,fs){
         gl.uniformMatrix4fv(this.locations.uniform.matnormal,false,flatten(normalM));
         gl.uniform4fv(this.locations.uniform.matlightPos,flatten(lightPosition));
         gl.uniform1i(this.locations.uniform.smode,mode);
+        gl.uniform1f(this.locations.uniform.shine,shin);
 
 
      //   gl.uniform4fv( this.locations.uniform.uColor, [1.0, 0.0, 0.0, 1.0]);

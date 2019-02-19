@@ -166,7 +166,7 @@
                                             uniform vec4 specColor;                                           
                                            
                                             uniform vec4 lightPos;
-                                           
+                                           uniform float shin;
 
                                             uniform int mode; 
 
@@ -189,7 +189,17 @@
                                                 
                                                 float Kd = max( dot(L, N), 0.0 );
                                                 vec4  diffuse = Kd*diffColor;
+
+                                                vec3 H = normalize( L + E );
+                                                float Ks = pow( max(dot(N, H), 0.0), shin );
+                                                vec4  specular = Ks * specColor;
+                                                
+                                                if( dot(L, N) < 0.0 ) {
+                                                specular = vec4(0.0, 0.0, 0.0, 1.0);
+                                                } 
+
                                                 if(mode==0)fColor=diffuse;
+                                                if(mode==1)fColor=specular;
                                                 fColor.a  =1.0;
 
                                             }

@@ -17,12 +17,12 @@ var fragments1 = [];
 var fragments2 = [];
 var selected = 10;
 var xxxx = true;
-var mode = 0;
+var mode = 0.0;
 
 
 var materialDiffuse = [1.0, 0.8, 0.0,1.0];
 var materialSpecular = [1.0, 0.8, 0.0,1.0];
-var lightPosition = [0.0, 10.0, 0.0, 1.0 ];
+var lightPosition = [0.0, 0.0, -10.0, 1.0 ];
 var shin = 100.0;
 
 
@@ -262,7 +262,7 @@ window.onkeydown = function (event) {
 
 
         case 37:
-            trans[0] = -0.01;
+            trans[0] = -0.2;
             cubes[selected].updateTrans(trans);
             fragments1[selected].updateTrans(trans);
             fragments2[selected].updateTrans(trans);
@@ -272,33 +272,33 @@ window.onkeydown = function (event) {
             break;
 
         case 39:
-            trans[0] = 0.01;
+            trans[0] = 0.2;
             cubes[selected].updateTrans(trans);
             fragments1[selected].updateTrans(trans);
             fragments2[selected].updateTrans(trans);
             break;
 
         case 38:
-            trans[1] = 0.01;
+            trans[1] = 0.2;
             cubes[selected].updateTrans(trans);
             fragments1[selected].updateTrans(trans);
             fragments2[selected].updateTrans(trans);
             break;
         case 40:
-            trans[1] = -0.01;
+            trans[1] = -0.2;
             cubes[selected].updateTrans(trans);
             fragments1[selected].updateTrans(trans);
             fragments2[selected].updateTrans(trans);
             break;
         case 190:
-            trans[2] = 0.01;
+            trans[2] = 0.2;
             cubes[selected].updateTrans(trans);
             fragments1[selected].updateTrans(trans);
             fragments2[selected].updateTrans(trans);
             break;
 
 
-        case 188: trans[2] = -0.01;
+        case 188: trans[2] = -0.2;
             cubes[selected].updateTrans(trans);
             fragments1[selected].updateTrans(trans);
             fragments2[selected].updateTrans(trans);
@@ -378,23 +378,18 @@ window.onkeydown = function (event) {
             fragments2[selected].updateScale(scale);
             break;
         //trst
-        case 80:
-            rotas[0] = 0.1;
-
-            cubes[selected].updateGlRota(rotas);
-
-            break;
+      
         case 85:
-            mode = 0;
+            mode = 0.0;
             break;
         case 73:
-            mode = 1;
+            mode = 1.0;
             break;
         case 79:
-            mode = 2;
+            mode = 2.0;
             break;
         case 80:
-            mode = 3;
+            mode = 3.0;
             break;
             
 

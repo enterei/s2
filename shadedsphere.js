@@ -148,7 +148,7 @@ function ShadedSphere(gl,inittrans,vs,fs){
         gl.uniform4fv(this.locations.uniform.matspec,flatten(specProduct));
         gl.uniformMatrix4fv(this.locations.uniform.matnormal,false,flatten(normalM));
         gl.uniform4fv(this.locations.uniform.matlightPos,flatten(lightPosition));
-        gl.uniform1i(this.locations.uniform.smode,mode);
+        gl.uniform1f(this.locations.uniform.smode,mode);
         gl.uniform1f(this.locations.uniform.shine,shin);
 
 

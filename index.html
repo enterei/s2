@@ -166,26 +166,40 @@
                                             uniform vec4 specColor;                                           
                                            
                                             uniform vec4 lightPos;
-                                           uniform float shin;
+                                            uniform float shin;
 
-                                            uniform int mode; 
-
+                                            uniform float mode; 
+                                            varying vec3 N, L, E;
 
                                             varying vec4 fColor;
+                                            varying float fmode;
+
+
+
+                                            varying vec4 fdiffColor;
+                                            varying vec4 fspecColor;
+                                            varying float fshin;
+                                            
+
+                                            
+
                                             varying vec4 nNormal;
                                             void main()
-                                            {
+                                            {   
+                                                fmode = mode;
                                                 gl_Position = uPMatrix * uMMatrix * aPosition;
                                                 vec3 eyePos = (uMMatrix * aPosition).xyz;
-                                                vec3 L ;
+                                              //  vec3 L ;
                                                 
                                                 if(lightPos.w == 0.0) L = normalize(lightPos.xyz);
                                                 else L = normalize( lightPos.xyz - eyePos );
 
-                                                vec3 E = -normalize( eyePos );
+                                                //vec3
+                                                 E = -normalize( eyePos );
 
                                                 
-                                                vec3 N = normalize((normalMatrix * aNormal).xyz);
+                                                //vec3
+                                                 N = normalize((normalMatrix * aNormal).xyz);
                                                 
                                                 float Kd = max( dot(L, N), 0.0 );
                                                 vec4  diffuse = Kd*diffColor;
@@ -198,21 +212,55 @@
                                                 specular = vec4(0.0, 0.0, 0.0, 1.0);
                                                 } 
 
-                                                if(mode==0)fColor=diffuse;
-                                                if(mode==1)fColor=specular;
+                                                if(mode==0.0)fColor=diffuse;
+                                                if(mode==1.0)fColor=specular;
                                                 fColor.a  =1.0;
+
+                                                fdiffColor = diffColor;
+                                                fspecColor = specColor;
+                                                fshin = shin;
 
                                             }
                                             </script>
     <script id="gauraud-fragment-shader" type="x-shader/x-fragment">
 
                                             precision mediump float;
+
+                                            varying vec4 fdiffColor;
+                                            varying vec4 fspecColor;
+                                            varying float fshin;
                                             
                                             varying vec4 fColor;
+                                            varying float fmode;
+                                            varying vec3 N, L, E;
+
+                                            
                                             
                                             void main()
                                             {
-                                                gl_FragColor = fColor;
+                                                vec3 H = normalize( L + E );
+                                                float Kd = max( dot(L, N), 0.0 );
+                                                vec4  diffuse = Kd*fdiffColor;
+
+                                                
+                                                float Ks = pow( max(dot(N, H), 0.0), fshin );
+                                                vec4  specular = Ks * fspecColor;                                                
+                                                if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
+
+
+                                                if(fmode==0.0) gl_FragColor = fColor;
+                                                if(fmode==1.0) gl_FragColor=fColor;
+                                                if(fmode==2.0){
+                                                       vec4 Color = diffuse;
+                                                        Color.a = 1.0;
+                                                        gl_FragColor = Color;
+                                                }
+                                                if(fmode==3.0){
+                                                    vec4 Color = specular;
+                                                    Color.a = 1.0;
+                                                    gl_FragColor =  Color;
+
+                                                }
                                             }
                                             </script>
 

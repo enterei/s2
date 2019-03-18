@@ -8,40 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Basic vertex shader -->
-    <script id="vs_basic" type="x-shader/x-vertex">
-            attribute vec3 aPosition;
-            attribute vec3 aColor;
-            attribute vec3 aNormal;
-
-            // model matrix
-            uniform mat4 uMMatrix;
-            // transposed inverse of the model matrix for transforming normals
-            uniform mat3 uMMatrixTInv;
-            // projection matrix
-            uniform mat4 uPMatrix;
-            
-            varying mediump vec3 vColor;
-            varying mediump vec3 vNormal;
-
-            void main() {
-                gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
-                vColor = aColor;
-                vNormal = mat3(uMMatrixTInv) * aNormal;
-            }
-        </script>
+  
     <!-- Basic fragment shader -->
-    <script id="fs_basic" type="x-shader/x-fragment">
-                    varying mediump vec3 vColor;
-                    varying mediump vec3 vNormal;
-                    
-                    void main() {
-                        // direction of parallel light source
-                        const mediump vec3 lightDir = vec3(-1.0, -1.0, -1.0);
-                        mediump float intensity = max(0.0, -dot(normalize(vNormal), lightDir));
-                        // diffuse reflection + ambient light
-                        gl_FragColor = vec4(vColor * intensity + vColor * 0.1, 1.0);
-                    }
-                </script>
+  
 
     <script id="vertex-shader" type="x-shader/x-vertex">
                     attribute vec3 aPosition;
@@ -63,46 +32,8 @@
                     gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
                     }
                     </script>
-    <script id="vertex-shader1" type="x-shader/x-vertex">
-                        attribute vec3 aPosition;
-                        attribute vec3 aColor;
-                        
-            
-                        // model matrix
-                        uniform mat4 uMMatrix;
-                        // transposed inverse of the model matrix for transforming normals
-                      
-                        // projection matrix
-                        uniform mat4 uPMatrix;
-                        
-                        varying mediump vec3 vColor;
-                      
-                        void main()
-                        {
-                        vColor = aColor;
-                        gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
-                        }
-                        </script>
-    <script id="vertex-shader2" type="x-shader/x-vertex">
-                            attribute vec3 aPosition;
-                            attribute vec3 aColor;
-                            
-                
-                            // model matrix
-                            uniform mat4 uMMatrix;
-                            // transposed inverse of the model matrix for transforming normals
-                          
-                            // projection matrix
-                            uniform mat4 uPMatrix;
-                            
-                            varying mediump vec3 vColor;
-                          
-                            void main()
-                            {
-                            vColor = aColor;
-                            gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
-                            }
-                            </script>
+  
+
 
     <script id="fragment-shader" type="x-shader/x-fragment">
 
@@ -116,45 +47,13 @@
                     </script>
 
 
-    <script id="sphere-vertex-shader" type="x-shader/x-vertex">
-                                    attribute vec4 aPosition;
-                                    attribute vec4 aColor;
-                                    varying vec4 fColor;
-                                    uniform mat4 uMMatrix;
-                                   
-                                    uniform mat4 uPMatrix;
-                        
-                                 
-                                    void main()
-                                    {
-                                    fColor = aColor;
-                                    gl_Position = uPMatrix * uMMatrix * aPosition;
-                                    }
-                                    </script>
+ 
 
-    <script id="sphere-fragment-shader1" type="x-shader/x-fragment">
 
-                                        precision mediump float;
-                                        
-                                        varying vec3 vColor;
-                                        
-                                        void main()
-                                        {
-                                            gl_FragColor = vec4(0.0,0.0,0.2,1.0);
-                                        }
-                                        </script>
-    <script id="sphere-fragment-shader2" type="x-shader/x-fragment">
 
-                                        precision mediump float;
-                                        
-                                        varying vec3 vColor;
-                                        
-                                        void main()
-                                        {
-                                            gl_FragColor = vec4(1.0,0.5,0.2,1.0);
-                                        }
-                                        </script>
+
     <script id="gauraud-vertex-shader" type="x-shader/x-fragment">
+        // reason for calling "gauraud vertex/fragment" shader is that i iniatially wanted to make 2 diffrent shaders and initiallize every sphere twice but then i used the mode variable
 
                                             attribute vec4 aPosition;
                                             attribute vec4 aNormal;
@@ -188,17 +87,21 @@
                                             {   
                                                 fmode = mode;
                                                 gl_Position = uPMatrix * uMMatrix * aPosition;
-                                                vec3 eyePos = (uMMatrix * aPosition).xyz;
-                                              //  vec3 L ;
+
+                                                //point pos is point right point on surface to compute vector l
+
+                                                vec3 pos = (uMMatrix * aPosition).xyz;
                                                 
+                                                
+                                                //vector L pointing to light source 
                                                 if(lightPos.w == 0.0) L = normalize(lightPos.xyz);
-                                                else L = normalize( lightPos.xyz - eyePos );
-
-                                                //vec3
-                                                 E = -normalize( eyePos );
+                                                else L = normalize( lightPos.xyz - pos );
+                                                
+                                                //E : vector from pos to the eye (origin) 
+                                                 E = -normalize( pos );
 
                                                 
-                                                //vec3
+                                                // normal with the right transforming matrix
                                                  N = normalize((normalMatrix * aNormal).xyz);
                                                 
                                                 float Kd = max( dot(L, N), 0.0 );

@@ -2,7 +2,7 @@ var shadedsphere_points= [];
 var shadeds_color=[];
 var shadedsphere_normals = [];
 var shadeds_index =0;
-var shadednumTimesToSubdivide = 3;
+var shadednumTimesToSubdivide = 5;
 
 
 

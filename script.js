@@ -22,7 +22,7 @@ var mode = 0.0;
 
 var materialDiffuse = [1.0, 0.8, 0.0,1.0];
 var materialSpecular = [1.0, 0.8, 0.0,1.0];
-var lightPosition = [0.0, 0.0, -10.0, 1.0 ];
+var lightPosition = [0.0, 0.5, -0.5, 1.0 ];
 var shin = 100.0;
 
 
@@ -56,55 +56,31 @@ function init() {
     const zFar = 100;
     mat4.ortho(pMatrix, -asp, asp, bottom, -bottom, zNear, zFar);
     perspectiveMatrix = mat4.perspective(perspectiveMatrix, 45, canvas.width / canvas.height, 0.01, 30);
-    //try {
-
-    var cube1 = new Cube(gl, [0.3, 0.3, -2.5]);
-    var cube2 = new Cube(gl, [0.1, 0.7, -2.5]);
-    var cube3 = new Cube(gl, [0.6, 0.2, -2.5]);
-    var cube4 = new Cube(gl, [0.2, 0.2, -2.5]);
-    var cube5 = new Cube(gl, [-0.6, 0.6, -2.5]);
-    var cube6 = new Cube(gl, [0.2, 0.5, -2.5]);
-    var cube7 = new Cube(gl, [-0.3, 0.2, -2.5]);
-   /* var s1_fragment1 = new ShadedSphere(gl, [-0.1, 0.0, -5.5],"vertex-shader1","sphere-fragment-shader1");  
-    var s1_fragment2 = new ShadedSphere(gl, [ -0.1, 0.0, -5.5],"vertex-shader2","sphere-fragment-shader2");
-
-    var s2_fragment1 = new ShadedSphere(gl, [-0.6, 0.3, -5.0],"vertex-shader1","sphere-fragment-shader1");  
-    var s2_fragment2 = new ShadedSphere(gl, [ -0.6, 0.3, -5.0],"vertex-shader2","sphere-fragment-shader2");
-
-    var s3_fragment1 = new ShadedSphere(gl, [0.1, -0.3, -6.5],"vertex-shader1","sphere-fragment-shader1");  
-    var s3_fragment2 = new ShadedSphere(gl, [ 0.1, -0.3, -6.5],"vertex-shader2","sphere-fragment-shader2");
-
-    var s4_fragment1 = new ShadedSphere(gl, [0.6, 0.7, -6.5],"vertex-shader1","sphere-fragment-shader1");  
-    var s4_fragment2 = new ShadedSphere(gl, [ 0.6, 0.7, -6.5],"vertex-shader2","sphere-fragment-shader2");*/
+    console.log(perspectiveMatrix);
 
 
 
+
+    // reason for calling "gauraud vertex/fragment" shader is that i iniatially wanted to make 2 diffrent shaders and initiallize every sphere twice but then i used the mode variable
     var s1_fragment1 = new ShadedSphere(gl, [-0.1, 0.0, -5.5],"gauraud-vertex-shader","gauraud-fragment-shader");  
-//    var s1_fragment2 = new ShadedSphere(gl, [ -0.1, 0.0, -5.5],"vertex-shader2","sphere-fragment-shader2");
+
 
     var s2_fragment1 = new ShadedSphere(gl, [-0.6, 0.3, -5.0],"gauraud-vertex-shader","gauraud-fragment-shader");  
-  //  var s2_fragment2 = new ShadedSphere(gl, [ -0.6, 0.3, -5.0],"vertex-shader2","sphere-fragment-shader2");
+
 
     var s3_fragment1 = new ShadedSphere(gl, [0.1, -0.3, -6.5],"gauraud-vertex-shader","gauraud-fragment-shader");  
-    //var s3_fragment2 = new ShadedSphere(gl, [ 0.1, -0.3, -6.5],"vertex-shader2","sphere-fragment-shader2");
+    
 
     var s4_fragment1 = new ShadedSphere(gl, [0.6, 0.7, -6.5],"gauraud-vertex-shader","gauraud-fragment-shader");  
-    //var s4_fragment2 = new ShadedSphere(gl, [ 0.6, 0.7, -6.5],"vertex-shader2","sphere-fragment-shader2");
+
    
     
 
 
-    var l1 = new L(gl, [0.0, 0.0, -0.5]);
-    var s1 = new Sphere(gl, [-0.1, 0.9, -5.5]);
 
 
-    cubes.push(cube1);
-    cubes.push(cube2);
-    cubes.push(cube3);
-    cubes.push(cube4);
-    cubes.push(cube5);
-    cubes.push(cube6);
-    cubes.push(cube7);
+
+
      cubes.push(s1_fragment1);
     // cubes.push(s1_fragment2);   
     fragments1.push(s1_fragment1);
@@ -149,28 +125,8 @@ function init() {
       
 
 
-      /*  for (var i = 0; i < cubes.length; i++) {
-
-
-            cubes[i].draw(gl, perspectiveMatrix, cubes[i].mMatrix);
-
-
-        }*/
-       // cubes[0].draw(gl, perspectiveMatrix, cubes[0].mMatrix);
-    //   console.log(document.getElementById("myCheck").checked);
-   ///     if(document.getElementById("myCheck").checked==true){
           
-            for (var i = 0; i < fragments1.length; i++)fragments1[i].drawL(gl, perspectiveMatrix, fragments1[i].mMatrix);
-          //  console.log("zeichne dort");
-   ////     }
-   //     else{
-           
-    //        for (var i = 0; i <fragments2.length; i++){ 
-              //  console.log("zeichne da");
-                
-         //       fragments2[i].draw(gl, perspectiveMatrix, fragments2[i].mMatrix);}
-
-    //    }
+        for (var i = 0; i < fragments1.length; i++)fragments1[i].drawL(gl, perspectiveMatrix, fragments1[i].mMatrix);
 
        
 

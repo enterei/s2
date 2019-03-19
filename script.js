@@ -22,7 +22,7 @@ var mode = 0.0;
 
 var materialDiffuse = [1.0, 0.8, 0.0,1.0];
 var materialSpecular = [1.0, 0.8, 0.0,1.0];
-var lightPosition = [0.0, 0.5, -0.5, 1.0 ];
+var lightPosition = [0.0, 10.0, -0.0, 1.0 ];
 var shin = 100.0;
 
 

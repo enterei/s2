@@ -104,6 +104,8 @@
                                                 // normal with the right transforming matrix
                                                  N = normalize((normalMatrix * aNormal).xyz);
                                                 
+
+                                                 
                                                 float Kd = max( dot(L, N), 0.0 );
                                                 vec4  diffuse = Kd*diffColor;
 
@@ -185,7 +187,7 @@
 
 <script type="text/javascript" src="gl-matrix/gl-matrix-min.js"></script>
 <script type="text/javascript" src="initShaders.js"></script>
-<script type="text/javascript" src="MV2.js"></script>
+
 
 
 <script type="text/javascript" src="coordinateSystem.js"></script>

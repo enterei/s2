@@ -7,18 +7,13 @@ var shadednumTimesToSubdivide = 3;
 
 
 function ShadedSphere(gl,inittrans,vs,fs){
-    this.shaderProgram = undefined;
-
-    
-    if (this.shaderProgram === undefined) {
+   
         console.log("jau vor dem laden");
       
 
         this.shaderProgram = initShaders(gl,vs, fs);
         
-        if (this.shaderProgram === null) {
-            throw new Error('Creating the shader program failed.');
-        }
+      
         console.log(vs);
         this.locations = {
             attribute: {
@@ -44,12 +39,8 @@ function ShadedSphere(gl,inittrans,vs,fs){
         };
         gl.enableVertexAttribArray( this.locations.attribute.aPosition);
         gl.enableVertexAttribArray( this.locations.attribute.aNormal);
-    }
-    else{
-        console.log("pr defined");
-    }
+   
 
-    if ( this.buffers === undefined) {
         if(shadedsphere_points.length==0){
             console.log("ein mal");
             fillshadedSpoints();}
@@ -83,7 +74,7 @@ function ShadedSphere(gl,inittrans,vs,fs){
             
         };
         
-    }
+    
     
     this.position = inittrans;
     this.transM = mat4.create();
@@ -144,10 +135,10 @@ function ShadedSphere(gl,inittrans,vs,fs){
         gl.useProgram( this.shaderProgram);
         gl.uniformMatrix4fv( this.locations.uniform.uPMatrix, false, pMatrix);
         gl.uniformMatrix4fv( this.locations.uniform.uMMatrix, false, this.mMatrix);
-        gl.uniform4fv(this.locations.uniform.matdiff,flatten(diffProduct));
-        gl.uniform4fv(this.locations.uniform.matspec,flatten(specProduct));
+        gl.uniform4fv(this.locations.uniform.matdiff,new Float32Array(diffProduct));
+        gl.uniform4fv(this.locations.uniform.matspec,new Float32Array(specProduct));
         gl.uniformMatrix4fv(this.locations.uniform.matnormal,false,flatten(normalM));
-        gl.uniform4fv(this.locations.uniform.matlightPos,flatten(lightPosition));
+        gl.uniform4fv(this.locations.uniform.matlightPos,new Float32Array(lightPosition));
         gl.uniform1f(this.locations.uniform.smode,mode);
         gl.uniform1f(this.locations.uniform.shine,shin);
 
@@ -244,6 +235,10 @@ function ShadedSphere(gl,inittrans,vs,fs){
         mat4.scale(this.scaleM,this.scaleM,s);
         this.updateAll();
     };
+    this.updateGlTrans = function(t){
+        mat4.translate(this.transM,this.transM,t);        
+        this.updateAll();
+    };
 
     this.updateAll= function(){
         mat4.identity(this.mMatrix);
@@ -300,9 +295,17 @@ function stetrahedron(a, b, c, d, n) {
 function sdivideTriangle(a, b, c, count) {
     
     if (count > 0) {
-        var ab = normalize(mix(a, b, 0.5), true);
-        var ac = normalize(mix(a, c, 0.5), true);
-        var bc = normalize(mix(b, c, 0.5), true);
+  //      var ab = normalize(mix(a, b, 0.5), true);
+   //     var ac = normalize(mix(a, c, 0.5), true);
+    //    var bc = normalize(mix(b, c, 0.5), true);  
+        var ab = normalo(gaa(a, b));
+        var ac = normalo(gaa(a, c));
+          var bc = normalo(gaa(b, c));
+
+    //    var ab = vec4.create();vec4.normalize(ab,mix(a, b, 0.5), true);
+      //  var ac = vec4.create();vec4.normalize(ac,mix(a, c, 0.5), true);
+       // var bc = vec4.create();vec4.normalize(bc,mix(b, c, 0.5), true);
+        console.log(ab);
 
         sdivideTriangle(a, ab, ac, count - 1);
         sdivideTriangle(ab, b, bc, count - 1);
@@ -326,5 +329,55 @@ function striangle(a, b, c){
 
 
     }
+function normalo(u){
+    var last = u.pop();
+    var len =  Math.sqrt( u[0]*u[0]+u[1]*u[1]+u[2]*u[2] );
+    console.log(len);
+    for ( var i = 0; i < u.length; ++i ) {
+        u[i] /= len;
+    }
+    u.push( last );
+    return u;
+}
+function gaa(a,b){
+    var ret = [];
+    for ( var i = 0; i < a.length; ++i ) {
+        ret.push( 0.5 * a[i] + 0.5 * b[i] );
+    }
+    return ret;
+
+}
 
 
+function flatten( v )
+{
+    if ( v.matrix === true ) {
+        v = transpose( v );
+    }
+
+    var n = v.length;
+    var elemsAreArrays = false;
+
+    if ( Array.isArray(v[0]) ) {
+        elemsAreArrays = true;
+        n *= v[0].length;
+    }
+
+    var floats = new Float32Array( n );
+
+    if ( elemsAreArrays ) {
+        var idx = 0;
+        for ( var i = 0; i < v.length; ++i ) {
+            for ( var j = 0; j < v[i].length; ++j ) {
+                floats[idx++] = v[i][j];
+            }
+        }
+    }
+    else {
+        for ( var i = 0; i < v.length; ++i ) {
+            floats[i] = v[i];
+        }
+    }
+
+    return floats;
+}

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-        <script type="text/javascript" src="MV.js"></script>
+      
     <title>WebGL Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,7 +71,7 @@
                                             varying vec3 N, L, E;
 
                                             varying vec4 fColor;
-                                            varying float fmode;
+                                            varying float fmode; // for fragment schader
 
 
 
@@ -188,11 +188,11 @@
 <script type="text/javascript" src="gl-matrix/gl-matrix-min.js"></script>
 <script type="text/javascript" src="initShaders.js"></script>
 
-
+<script type="text/javascript" src="light.js"></script>
 
 <script type="text/javascript" src="coordinateSystem.js"></script>
 <script type="text/javascript" src="script.js"></script>
-<script type="text/javascript" src="cube.js"></script>
+
 <script type="text/javascript" src="sphere.js"></script>
 <script type="text/javascript" src="shadedsphere.js"></script>
 <script type="text/javascript" src="l.js"></script>

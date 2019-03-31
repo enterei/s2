@@ -3,8 +3,7 @@ function CoordinateSystem(gl){
 
     
 
-    if (CoordinateSystem.shaderProgram === undefined) {
-        console.log("jau vor dem laden");
+    
         CoordinateSystem.shaderProgram = initShaders(gl, "vertex-shader", "fragment-shader");
         
         if (CoordinateSystem.shaderProgram === null) {
@@ -25,9 +24,8 @@ function CoordinateSystem(gl){
         gl.enableVertexAttribArray(CoordinateSystem.locations.attribute.aPosition);
         gl.enableVertexAttribArray(CoordinateSystem.locations.attribute.aColor);
         gl.enableVertexAttribArray(CoordinateSystem.locations.attribute.aNormal);
-    }
+    
 
-    if (CoordinateSystem.buffers === undefined) {
      
         // Create a buffer with the vertex positions
         // 3 coordinates per vertex, 3 vertices per triangle
@@ -57,7 +55,7 @@ function CoordinateSystem(gl){
             cComponents: 3, // number of components per color in cBuffer
             
         };
-    }
+    
 
 
 

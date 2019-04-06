@@ -17,7 +17,7 @@ function CoordinateSystem(gl){
             },
             uniform: {
                 uMMatrix: gl.getUniformLocation(CoordinateSystem.shaderProgram, "uMMatrix"),
-               
+                uCMatrix: gl.getUniformLocation(CoordinateSystem.shaderProgram,"camera"),
                 uPMatrix: gl.getUniformLocation(CoordinateSystem.shaderProgram, "uPMatrix")
             }
         };
@@ -57,7 +57,8 @@ function CoordinateSystem(gl){
         };
     
 
-
+        this.camera = mat4.create();
+        mat4.lookAt(this.camera,[0,0,10],[0,0,0],[0,1,0]);
 
 
     this.draw = function(gl, pMatrix,ctm) {
@@ -66,6 +67,7 @@ function CoordinateSystem(gl){
         gl.useProgram(CoordinateSystem.shaderProgram);
         gl.uniformMatrix4fv(CoordinateSystem.locations.uniform.uPMatrix, false, pMatrix);
         gl.uniformMatrix4fv(CoordinateSystem.locations.uniform.uMMatrix, false, ctm);
+        gl.uniformMatrix4fv(CoordinateSystem.locations.uniform.uCMatrix,false,this.camera);     
         
         gl.uniform4fv(CoordinateSystem.locations.uniform.uColor, [1.0, 0.0, 0.0, 1.0]);
         

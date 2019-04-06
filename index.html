@@ -23,13 +23,13 @@
                   
                     // projection matrix
                     uniform mat4 uPMatrix;
-                    
+                    uniform mat4 camera;
                     varying mediump vec3 vColor;
                   
                     void main()
                     {
                     vColor = aColor;
-                    gl_Position = uPMatrix * uMMatrix * vec4(aPosition, 1.0);
+                    gl_Position = uPMatrix * camera*uMMatrix * vec4(aPosition, 1.0);
                     }
                     </script>
   
@@ -61,13 +61,21 @@
                                             uniform mat4 uMMatrix;                                        
                                             uniform mat4 uPMatrix;
                                             uniform mat4 normalMatrix;
+                                            uniform mat4 camera;
+
+
                                             uniform vec4 diffColor;
                                             uniform vec4 specColor;                                           
                                            
                                             uniform vec4 lightPos;
+                                            varying vec4 realLightPos;
+                                            uniform mat4 lightModelMatrix;
                                             uniform float shin;
 
                                             uniform float mode; 
+                                            //L: to light source
+                                            //N
+                                    
                                             varying vec3 N, L, E;
 
                                             varying vec4 fColor;
@@ -78,6 +86,7 @@
                                             varying vec4 fdiffColor;
                                             varying vec4 fspecColor;
                                             varying float fshin;
+                                           varying vec3 cameraPos;
                                             
 
                                             
@@ -85,21 +94,22 @@
                                             varying vec4 nNormal;
                                             void main()
                                             {   
+                                                realLightPos = lightModelMatrix*lightPos;
                                                 fmode = mode;
-                                                gl_Position = uPMatrix * uMMatrix * aPosition;
+                                                gl_Position = uPMatrix * camera*uMMatrix * aPosition;
 
-                                                //point pos is point right point on surface to compute vector l
+                                                //point pos is  right point on surface to compute vector l
 
                                                 vec3 pos = (uMMatrix * aPosition).xyz;
-                                                
+                                                 cameraPos = vec3(0.0,-10.0,0.0);
                                                 
                                                 //vector L pointing to light source 
-                                                if(lightPos.w == 0.0) L = normalize(lightPos.xyz);
-                                                else L = normalize( lightPos.xyz - pos );
+                                                if(realLightPos.w == 0.0) L = normalize(realLightPos.xyz);
+                                                else L = normalize( realLightPos.xyz - pos );
                                                 
-                                                //E : vector from pos to the eye (origin) 
-                                                 E = -normalize( pos );
-
+                                                //E : vector from pos to the camera (10 behind origin) 
+                                             //    E = normalize(   -pos );
+                                                    E = normalize(cameraPos-pos); // i realy hope this line is correct, but it should be becouse camera is 10 behind origin ....
                                                 
                                                 // normal with the right transforming matrix
                                                  N = normalize((normalMatrix * aNormal).xyz);
@@ -160,7 +170,7 @@
                                                         Color.a = 1.0;
                                                         gl_FragColor = Color;
                                                 }
-                                                if(fmode==3.0){
+                                                 if(fmode==3.0){
                                                     vec4 Color = specular;
                                                     Color.a = 1.0;
                                                     gl_FragColor =  Color;

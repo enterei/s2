@@ -1,39 +1,35 @@
 function light(){
     this.lightpos = [0.0, 10.0, -0.0, 1.0 ];
-    this.mMatrix = mat4.create();
+    this.GlMatrix = mat4.create();
+    this.glrota = mat4.create();
+    this.gltrans = mat4.create();
+
     this.updateGlTrans = function(t){
-        mat4.translate(this.transM,this.transM,t);        
-        this.updateAll();
+        mat4.translate(this.gltrans,this.gltrans,t);        
+        this.updateGlAll();
     };
     this.updateGlRota=function(r){
-        var help = mat4.create();
-        var lr = mat4.create();
-        mat4.rotateX(lr,lr,r[0]);
-        mat4.rotateY(lr,lr,r[1]);
-        mat4.rotateZ(lr,lr,r[2]);
-        var trinv = mat4.create();
-        mat4.invert(trinv,this.transM);
- 
-        mat4.multiply(help,this.transM,lr);
-        mat4.multiply(help,help,trinv);
-        mat4.multiply(this.rotaM,this.rotaM,help);
-        this.updateAll();
+        mat4.rotateX(this.glrota,this.glrota,r[0]);
+        mat4.rotateY(this.glrota,this.glrota,r[1]);
+        mat4.rotateZ(this.glrota,this.glrota,r[2]);
+        this.updateGlAll();
         
          
  
      };
-     this.updateAll= function(){
-        mat4.identity(this.mMatrix);
+   
+    this.updateGlAll= function(){
+        mat4.identity(this.GlMatrix);
         
-
-
-        mat4.multiply(this.mMatrix,this.mMatrix,this.transM);
+    
+    
+        mat4.multiply(this.GlMatrix,this.GlMatrix,this.gltrans);
       
-        mat4.multiply(this.mMatrix,this.mMatrix,this.rotaM);
-        mat4.multiply(this.mMatrix,this.mMatrix,this.scaleM);
-     //  mat4.multiply(this.mMatrix,this.transM,this.rotaM);
-     
-  
+        mat4.multiply(this.GlMatrix,this.GlMatrix,this.glrota);
+        console.log(this.GlMatrix);
+        
+      
+    
     }
 
 

@@ -31,6 +31,8 @@ function ShadedSphere(gl,inittrans,vs,fs){
                 matlightPos: gl.getUniformLocation(this.shaderProgram,"lightPos"),
                 smode: gl.getUniformLocation(this.shaderProgram,"mode"),
                 shine: gl.getUniformLocation(this.shaderProgram,"shin"), 
+                uCMatrix: gl.getUniformLocation(this.shaderProgram,"camera"),
+                uMLight: gl.getUniformLocation(this.shaderProgram,"lightModelMatrix"),
 
 
 
@@ -85,17 +87,23 @@ function ShadedSphere(gl,inittrans,vs,fs){
     this.rotationZ = 0.0;
     this.rotaM = mat4.create();
 
-   
+    this.GlMatrix= mat4.create();
+    this.gltrans = mat4.create();
+    this.glrota= mat4.create();
+  
     
     this.scaleY = 0.0;
     this.scaleX = 0.0;
     this.scaleZ = 0.0;
     this.scaleM=mat4.create();
+    this.ctm = mat4.create();
 
 
 
     this.mMatrix = mat4.create();
     this.mMatrixTInv = mat3.create();
+    this.camera = mat4.create();
+    mat4.lookAt(this.camera,[0,0,10],[0,0,0],[0,1,0]);
 
 
     this.draw = function(gl, pMatrix) {
@@ -128,20 +136,22 @@ function ShadedSphere(gl,inittrans,vs,fs){
 
     this.drawL=function(gl,pMatrix){
         normalM = mat4.create();
-        mat4.transpose(normalM,this.mMatrix);
+        mat4.transpose(normalM,this.ctm);
         mat4.invert(normalM,normalM);
 
      
         gl.useProgram( this.shaderProgram);
         gl.uniformMatrix4fv( this.locations.uniform.uPMatrix, false, pMatrix);
-        gl.uniformMatrix4fv( this.locations.uniform.uMMatrix, false, this.mMatrix);
+        gl.uniformMatrix4fv( this.locations.uniform.uMMatrix, false, this.ctm);
         gl.uniform4fv(this.locations.uniform.matdiff,new Float32Array(diffProduct));
         gl.uniform4fv(this.locations.uniform.matspec,new Float32Array(specProduct));
         gl.uniformMatrix4fv(this.locations.uniform.matnormal,false,flatten(normalM));
-        gl.uniform4fv(this.locations.uniform.matlightPos,new Float32Array(lightPosition));
+        gl.uniform4fv(this.locations.uniform.matlightPos,new Float32Array(light.lightpos));
         gl.uniform1f(this.locations.uniform.smode,mode);
         gl.uniform1f(this.locations.uniform.shine,shin);
-
+        gl.uniformMatrix4fv(this.locations.uniform.uCMatrix,false,this.camera);
+     
+        gl.uniformMatrix4fv(this.locations.uniform.uMLight,false,light.GlMatrix);
 
      //   gl.uniform4fv( this.locations.uniform.uColor, [1.0, 0.0, 0.0, 1.0]);
         
@@ -183,18 +193,11 @@ function ShadedSphere(gl,inittrans,vs,fs){
 
     };
     this.updateGlRota=function(r){
-       var help = mat4.create();
-       var lr = mat4.create();
-       mat4.rotateX(lr,lr,r[0]);
-       mat4.rotateY(lr,lr,r[1]);
-       mat4.rotateZ(lr,lr,r[2]);
-       var trinv = mat4.create();
-       mat4.invert(trinv,this.transM);
-
-       mat4.multiply(help,this.transM,lr);
-       mat4.multiply(help,help,trinv);
-       mat4.multiply(this.rotaM,this.rotaM,help);
-       this.updateAll();
+        
+        mat4.rotateX(this.glrota,this.glrota,r[0]);
+        mat4.rotateY(this.glrota,this.glrota,r[1]);
+        mat4.rotateZ(this.glrota,this.glrota,r[2]);
+        this.updateGlAll();
        
         
 
@@ -236,8 +239,8 @@ function ShadedSphere(gl,inittrans,vs,fs){
         this.updateAll();
     };
     this.updateGlTrans = function(t){
-        mat4.translate(this.transM,this.transM,t);        
-        this.updateAll();
+        mat4.translate(this.gltrans,this.gltrans,t);        
+        this.updateGlAll();
     };
 
     this.updateAll= function(){
@@ -251,7 +254,24 @@ function ShadedSphere(gl,inittrans,vs,fs){
         mat4.multiply(this.mMatrix,this.mMatrix,this.scaleM);
      //  mat4.multiply(this.mMatrix,this.transM,this.rotaM);
      
-  
+        this.updateAllALL();
+    }
+    this.updateGlAll= function(){
+        mat4.identity(this.GlMatrix);
+        
+    
+    
+        mat4.multiply(this.GlMatrix,this.GlMatrix,this.gltrans);
+      
+        mat4.multiply(this.GlMatrix,this.GlMatrix,this.glrota);
+        this.updateAllALL();
+      
+    
+    }
+    this.updateAllALL = function(){
+        mat4.identity(this.ctm);
+        mat4.multiply(this.ctm,this.GlMatrix,this.mMatrix);
+    
     }
 
 }
